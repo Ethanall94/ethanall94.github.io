@@ -1,0 +1,75 @@
+---
+layout: posts
+title:  "배포하기"
+date:   2023-11-02 19:55:00 +0900
+categories: AWS, Docker, Shell
+---
+<aside>
+💡 Docker Hub의 이미지를 EC2에서 받아서 인터넷에 띄워봅시다!
+
+</aside>
+
+### 사전준비
+
+---
+
+[Docker & Docker Hub](https://www.notion.so/Docker-Docker-Hub-130ec4f9973b4efc9b73f03a92997aea?pvs=21)
+
+[AWS에서 EC2 생성하기](https://www.notion.so/AWS-EC2-29bb64dbef644983ab82323c799c970a?pvs=21)
+
+[EC2 접속하기](https://www.notion.so/EC2-11c557a9a2a442db85e52fc190917dc4?pvs=21)
+
+### 과정
+
+---
+
+1. 터미널에서 SSH를 통해 EC2에 접속해줍니다.
+    
+    ```bash
+    $ ssh [인스턴스 생성시 작성한 이름]
+    ```
+    
+2. EC2에서 docker를 다운받아 줍니다.
+    
+    ```bash
+    $ sudo docker install
+    ```
+    
+3. docker hub 에 있는 docker 이미지를 다운받아 줍니다.
+    
+    ```bash
+    $ sudo docker pull [docker id]/[repository]
+    ```
+    
+4. docker 를 실행시켜 줍니다.
+    
+    ```bash
+    $ sudo systemctl start docker
+    ```
+    
+5. 받아온 이미지를 실행시켜줍니다.
+    
+    ```bash
+    $ sudo docker run -d -p [호스트의 포트]:[컨테이너 포트] --name [컨테이너 이름] [docker id]/[repository]
+    ```
+    
+    docker run option
+    
+    - `-p [호스트 포트]:[컨테이너 포트]` : [호스트 포트]와 [컨테이너 포트]를 연결
+    - `--name [컨테이너 이름]` : container 이름을 ex_container로 하기
+    
+6. 브라우저에서 IP주소:[호스트 포트] 로 실행을 확인합니다.
+
+---
+
+기타 docker 명령어
+
+- `sudo docker ps -a` : 컨테이너 상태와 무관하게 존재하는 **컨테이너 보여줘**요
+- `sudo docker stop [container name / container ID]` : 해당 컨테이너를 **멈출래**요
+- `sudo docker rm [container name / container ID]` : 해당 컨테이너를 **지울래**요
+- `sudo docker restart [container name / container ID]` : 해당 컨테이너를 **재실행 할래**요
+- `sudo docker rmi [image ID]` : 해당 **도커 이미지**를 **지울래**요
+- `sudo docker logs [container name / container ID]` : 해당 컨테이너의 **로그**를 **확인할래**요
+- `sudo docker exec [container ID] [명렁어]` : 해당 **컨테이너 내부**의 **터미널 사용 할래**요
+
+---
